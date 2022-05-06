@@ -1,6 +1,4 @@
-import requests
 import pytest
-
 
 header1 = "Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 " \
           "(KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
@@ -38,7 +36,8 @@ expected5 = {'platform': 'Mobile', 'browser': 'No', 'device': 'iPhone'}
                                               (header4, expected4),
                                               (header5, expected5)])
 def test_parametrize(header, expected):
-    url_user_agent_check = requests.get("https://playground.learnqa.ru/ajax/api/user_agent_check",
+    from requests import get
+    url_user_agent_check = get("https://playground.learnqa.ru/ajax/api/user_agent_check",
                                         headers={"User-Agent": header}).json()
 
     expected_result = str(expected)[1:-1]
