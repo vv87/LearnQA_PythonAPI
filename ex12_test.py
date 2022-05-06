@@ -4,7 +4,7 @@ import requests
 def test_header():
     url_homework_header = requests.get("https://playground.learnqa.ru/api/homework_header").headers
     home_work_header = "x-secret-homework-header"
-    secret_value = 'Some secret value'
+    secret_value = "Some secret value"
     check_home_work_value = url_homework_header[home_work_header]
     # print(url_homework_header)
 
