@@ -38,7 +38,7 @@ expected5 = {'platform': 'Mobile', 'browser': 'No', 'device': 'iPhone'}
 def test_parametrize(header, expected):
     from requests import get
     url_user_agent_check = get("https://playground.learnqa.ru/ajax/api/user_agent_check",
-                                        headers={"User-Agent": header}).json()
+                               headers={"User-Agent": header}).json()
 
     expected_result = str(expected)[1:-1]
     assert expected_result in str(url_user_agent_check), f'{expected_result} is not in {url_user_agent_check}'
