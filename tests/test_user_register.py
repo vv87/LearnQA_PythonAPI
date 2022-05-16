@@ -1,43 +1,25 @@
 from datetime import datetime
-import requests
 import pytest
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
+from LearnQA_PythonAPI.lib.my_requests import MyRequests
 
 
 class TestUserRegister(BaseCase):
 
-    def setup(self):
-        base_part = "learnqa"
-        domain = "example.com"
-        random_part = datetime.now().strftime("%m%d%Y%H%M%S")
-        self.email = f"{base_part}{random_part}@{domain}"
-
     def test_create_user_successfully(self):
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': self.email
-        }
+        data = self.prepare_registration_data()
 
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
     def test_create_user_with_existing_email(self):
         email = 'vincotov@example.com'
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': email
-        }
+        data = self.prepare_registration_data(email)
 
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_code_status(response, 400)
         Assertions.assert_response_content_equal_actual_result(
@@ -56,7 +38,7 @@ class TestUserRegister(BaseCase):
             'email': email
         }
 
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_response_content_equal_actual_result(
             response,
@@ -74,7 +56,7 @@ class TestUserRegister(BaseCase):
             'email': self.email
         }
 
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_response_content_equal_actual_result(
             response,
@@ -92,7 +74,7 @@ class TestUserRegister(BaseCase):
             'email': self.email
         }
 
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_response_content_equal_actual_result(
             response,
@@ -155,7 +137,7 @@ class TestUserRegister(BaseCase):
                                                 (data_without_lastname, expected4),
                                                 (data_without_email, expected5)])
     def test_create_user_without_one_of_fields(self, data, expected):
-        response = requests.post("https://playground.learnqa.ru/api/user", data=data)
+        response = MyRequests.post("/user", data=data)
 
         Assertions.assert_response_content_equal_actual_result(
             response,
