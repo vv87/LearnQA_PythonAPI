@@ -1,9 +1,13 @@
+import allure
+
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
 
 
+@allure.epic("User edit request cases")
 class TestUserEdit(BaseCase):
+    @allure.step("Registration request")
     def register(self):
         register_data = self.prepare_registration_data()
         response1 = MyRequests.post("/user/", data=register_data)
@@ -16,6 +20,7 @@ class TestUserEdit(BaseCase):
         self.password = register_data['password']
         self.user_id = self.get_json_value(response1, 'id')
 
+    @allure.step("Login request")
     def login(self):
         login_data = {
             'email': self.email,
@@ -27,6 +32,7 @@ class TestUserEdit(BaseCase):
         self.auth_sid = self.get_cookie(response2, "auth_sid")
         self.token = self.get_header(response2, "x-csrf-token")
 
+    @allure.step("Edit request")
     def edit(self):
         self.new_name = "Changed Name"
 
@@ -39,6 +45,7 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response3, 200)
 
+    @allure.step("Get user info request")
     def get(self):
         self.response4 = MyRequests.get(
             f"/user/{self.user_id}",
@@ -59,7 +66,7 @@ class TestUserEdit(BaseCase):
         self.edit()
         self.get()
 
-    # Попытаемся изменить данные пользователя, будучи неавторизованными
+    @allure.description("Attempt to change user data by being unauthorized")
     def test_edit_not_auth_user(self):
         self.register()
 
@@ -83,7 +90,7 @@ class TestUserEdit(BaseCase):
             f"There is no '{expected}' text in response content, current text is: " + response3.content.decode("utf-8")
         )
 
-    # - Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем
+    @allure.description("Attempt to change user data while being authorized by another user")
     def test_try_edit_user_being_authorized_by_another_user(self):
         self.register()
         self.login()
@@ -100,8 +107,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response3, 200)
 
-    # - Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем,
-    # на новый email без символа @
+    @allure.description("Attempt to change a user's email while logged in by the same user "
+                        "to a new email without the @ symbol")
     def test_edit_user_email_on_not_valid_email(self):
         self.register()
         self.login()
@@ -125,8 +132,8 @@ class TestUserEdit(BaseCase):
             f"There is no '{expected}' text in response content, current text is: " + response4.content.decode("utf-8")
         )
 
-    # - Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем,
-    # на очень короткое значение в один символ
+    @allure.description("Attempt to change the firstName of the user, being authorized by the same user, "
+                        "to a very short value of one character")
     def test_edit_auth_user_on_short_firstname(self):
         self.register()
         self.login()

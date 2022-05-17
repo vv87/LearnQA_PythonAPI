@@ -1,20 +1,13 @@
+import allure
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
 
 
+@allure.epic("User delete request cases")
 class TestUserDelete(BaseCase):
 
-    """
-    Написать следующие тесты:
-    1. Первый - на попытку удалить пользователя по ID 2. Его данные для авторизации:
-            data = {
-                'email': 'vinkotov@example.com',
-                'password': '1234'
-            }
-    Убедиться, что система не даст вам удалить этого пользователя.
-    """
-
+    @allure.description("Unable to delete user with ID 2")
     def test_delete_user_by_id2(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -56,8 +49,8 @@ class TestUserDelete(BaseCase):
             f"There is no '{expected}' text in response content, current text is: " + response3.content.decode("utf-8")
         )
 
-    # Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID
-    # и убедиться, что пользователь действительно удален.
+    @allure.description("Create a user, log in from under him, delete, then try to get his data by ID "
+                        "and make sure that the user is really deleted.")
     def test_create_and_delete_user_by_id(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -108,7 +101,7 @@ class TestUserDelete(BaseCase):
             f"There is no '{expected}' text in response content, current text is: " + response4.content.decode("utf-8")
         )
 
-    # 3.Третий - негативный, попробовать удалить пользователя, будучи авторизованными другим пользователем.
+    @allure.description("Try to delete a user while being logged in by another user")
     def test_ry_to_delete_another_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()

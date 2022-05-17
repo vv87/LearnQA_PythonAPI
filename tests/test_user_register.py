@@ -3,10 +3,13 @@ import pytest
 from LearnQA_PythonAPI.lib.base_case import BaseCase
 from LearnQA_PythonAPI.lib.assertions import Assertions
 from LearnQA_PythonAPI.lib.my_requests import MyRequests
+import allure
 
 
+@allure.epic("Registration cases")
 class TestUserRegister(BaseCase):
 
+    @allure.description("Create user test")
     def test_create_user_successfully(self):
         data = self.prepare_registration_data()
 
@@ -15,8 +18,9 @@ class TestUserRegister(BaseCase):
         Assertions.assert_code_status(response, 200)
         Assertions.assert_json_has_key(response, "id")
 
+    @allure.description("Create user with existing email")
     def test_create_user_with_existing_email(self):
-        email = 'vincotov@example.com'
+        email = 'vinkotov@example.com'
         data = self.prepare_registration_data(email)
 
         response = MyRequests.post("/user", data=data)
@@ -28,6 +32,7 @@ class TestUserRegister(BaseCase):
             f"Unexpected response content {response.content}"
         )
 
+    @allure.description("Create user with incorrect email")
     def test_create_user_with_incorrect_email(self):
         email = 'asfvexample.com'
         data = {
@@ -47,6 +52,7 @@ class TestUserRegister(BaseCase):
         )
         Assertions.assert_code_status(response, 400)
 
+    @allure.description("Create user with short name")
     def test_create_user_with_short_name(self):
         data = {
             'password': '123',
@@ -65,6 +71,7 @@ class TestUserRegister(BaseCase):
         )
         Assertions.assert_code_status(response, 400)
 
+    @allure.description("Create user with long name")
     def test_create_user_with_long_name(self):
         data = {
             'password': '123',
@@ -131,6 +138,7 @@ class TestUserRegister(BaseCase):
 
     expected5 = assert_value_first_part + "email"
 
+    @allure.description("Create user without one of fields")
     @pytest.mark.parametrize('data, expected', [(data_without_pass, expected1),
                                                 (data_without_username, expected2),
                                                 (data_without_firstname, expected3),
