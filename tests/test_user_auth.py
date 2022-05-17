@@ -12,7 +12,7 @@ class TestUserAuth(BaseCase):
 
     def setup(self):
         data = {
-            'email': 'vincotov@example.com',
+            'email': 'vinkotov@example.com',
             'password': '1234'
         }
 

@@ -36,3 +36,4 @@ class BaseCase:
             'lastName': 'learnqa',
             'email': email
         }
+

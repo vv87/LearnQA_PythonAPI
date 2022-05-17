@@ -125,10 +125,6 @@ class TestUserEdit(BaseCase):
             f"There is no '{expected}' text in response content, current text is: " + response4.content.decode("utf-8")
         )
 
-        expected_fields = ["username", "email", "firstName", "lastName"]
-
-        Assertions.assert_json_has_keys(response4, expected_fields)
-
     # - Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем,
     # на очень короткое значение в один символ
     def test_edit_auth_user_on_short_firstname(self):
@@ -154,6 +150,3 @@ class TestUserEdit(BaseCase):
             expected,
             f"There is no '{expected}' text in response content, current text is: " + response3.content.decode("utf-8")
         )
-
-
-
