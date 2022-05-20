@@ -1,6 +1,6 @@
-from LearnQA_PythonAPI.lib.base_case import BaseCase
-from LearnQA_PythonAPI.lib.assertions import Assertions
-from LearnQA_PythonAPI.lib.my_requests import MyRequests
+from ..lib.base_case import BaseCase
+from ..lib.assertions import Assertions
+from ..lib.my_requests import MyRequests
 import allure
 
 

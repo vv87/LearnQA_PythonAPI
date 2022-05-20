@@ -1,6 +1,5 @@
 import json.decoder
 from datetime import datetime
-
 from requests import Response
 
 
